@@ -2,34 +2,42 @@
 
 # An iterrative programming solution
 def fib_iter(n):
-  prev = 0
-  curr = 1
-
-  if n <= 1:
-    return n
+  a, b = 0, 1
   
-  for i in range(2,n + 1):
-    oldCurr = curr
-    curr = prev + curr
-    prev = oldCurr
+  # iterrate
+  for i in range(n):
+    a, b = b, a + b
 
-  return curr
+  return a
 
 # A recursive programming solution
 def fib_rec(n):
 
-  if n <= 1 and n >= 0:
+  # base case
+  if n == 1 or n == 0:
     return n
   
-  return fib_rec(n - 1) + fib_rec(n + 2)
+  # recurse
+  return fib_rec(n-1) + fib_rec(n-2)
 
 # A dynamic programming solution
-def fib_dp(n):
+
+# Instantiate Cache information
+def createCache(n):
+  cache = [None] * (n + 1)
+  return cache
+
+def fib_dp(n, cache):
 
   if n <= 1:
     return n
   
-  pass
+  if cache[n] != None:
+    return cache[n]
+  
+  cache[n] = fib_dp(n - 1, cache) + fib_dp(n - 2, cache)
+  return cache[n]
+
 
 
 
@@ -57,23 +65,24 @@ print("\n##################################################")
 print("#### Recursive tests")
 print("##################################################\n")
 testNumber = 0
-# for testCase, expectedResult in zip(testCases, expectedResults):
-#   testNumber += 1
-#   result = fib_rec(testCase)
-#   print("\n### Test Number {}: {}".format(testNumber, testCase))
-#   print("\t- Test case {} passed? {}".format(testCase, result == expectedResult))
-#   print("\t\t* Found:    {}".format(result))
-#   print("\t\t* Expected: {}".format(expectedResult))
+for testCase, expectedResult in zip(testCases, expectedResults):
+  testNumber += 1
+  result = fib_rec(testCase)
+  print("\n### Test Number {}: {}".format(testNumber, testCase))
+  print("\t- Test case {} passed? {}".format(testCase, result == expectedResult))
+  print("\t\t* Found:    {}".format(result))
+  print("\t\t* Expected: {}".format(expectedResult))
 
 # Dynamic Programming tests
 print("\n##################################################")
 print("#### Dynamic programming tests")
 print("##################################################\n")
 testNumber = 0
-# for testCase, expectedResult in zip(testCases, expectedResults):
-#   testNumber += 1
-#   result = fib_dp(testCase)
-#   print("\n### Test Number {}: {}".format(testNumber, testCase))
-#   print("\t- Test case {} passed? {}".format(testCase, result == expectedResult))
-#   print("\t\t* Found:    {}".format(result))
-#   print("\t\t* Expected: {}".format(expectedResult))
+for testCase, expectedResult in zip(testCases, expectedResults):
+  testNumber += 1
+  cache = createCache(testCase)
+  result = fib_dp(testCase, cache)
+  print("\n### Test Number {}: {}".format(testNumber, testCase))
+  print("\t- Test case {} passed? {}".format(testCase, result == expectedResult))
+  print("\t\t* Found:    {}".format(result))
+  print("\t\t* Expected: {}".format(expectedResult))
